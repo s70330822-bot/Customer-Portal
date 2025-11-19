@@ -1,0 +1,48 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3 class="fw-bold mb-3">Current Logged-in Users</h3>
+
+    {% if users and users|length > 0 %}
+    <table class="table table-hover shadow-sm rounded table-bordered">
+        <thead class="table">
+            <tr>
+                <th>Username</th>
+                <th>Session Name</th>
+                <th>Session ID</th>
+                <th>Status</th>
+                <th>Idle Time</th>
+                <th>Logon Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td class="fw-semibold">{{ u.username }}</td>
+                <td>{{ u.sessionname }}</td>
+                <td>{{ u.session_id }}</td>
+                <td>
+                    {% if u.state == "Active" %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ u.state }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ u.idle_time }}</td>
+                <td>{{ u.logon_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+        <div class="alert alert-warning mt-3">
+            No active sessions found on the system.
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

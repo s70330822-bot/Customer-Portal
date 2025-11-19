@@ -1,0 +1,181 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .dash-label {
+        font-weight: 600;
+        font-size: 14px;
+        color: #555;
+    }
+    .value-text {
+        font-size: 15px;
+        font-weight: 500;
+        color: #333;
+    }
+</style>
+<!-- Welcome Card -->
+<div class="card-box mt-4">
+    <h3>Welcome to Vedant Cloud Portal</h3>
+    <h5>Thanks for your business! {{ request.user.first_name }}</h5>
+</div>
+
+<!-- Quick Login Table -->
+<div class="card-box">
+    <h5><i class="fa-solid fa-right-to-bracket"></i> Quick Login</h5>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Server PC</th>
+                <th>Windows User</th>
+                <th>CPU (%)</th>
+                <th>Memory (%)</th>
+                <th>Login</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{ server_data.pc_name }}</td>
+                <td>{{ server_data.username }}</td>
+                <td>{{ server_data.cpu }}%</td>
+                <td>{{ server_data.memory }}%</td>
+
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="window.location.href='C:\Rajan Project\connect.rdp'">
+    Remote Login
+</button>
+
+                    <button class="btn btn-secondary btn-sm">HTML Login</button>
+                </td>
+
+                <td>
+                    {% if server_data.status == "Online" %}
+                        <span class="badge bg-success">Online</span>
+                    {% else %}
+                        <span class="badge bg-danger">Offline</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Stats Row -->
+<!-- <div class="row">
+    <div class="col-md-4">
+        <div class="card-box text-center">
+            <div class="circle-box">17.9K</div>
+            <p class="mt-2">Total Logins</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card-box text-center">
+            <div class="circle-box">5 / 8</div>
+            <p class="mt-2">Active Users</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card-box text-center">
+            <div class="circle-box">72%</div>
+            <p class="mt-2">Storage Used</p>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="row">
+    <div class="col-sm-6">
+<!-- Account Details Summary -->
+<div class="card-box mt-4">
+<h5 class="fw-bold d-flex justify-content-between align-items-center">
+        Account Details
+<a href="{% url 'profile' %}" class="btn btn-sm">
+            View More →
+        </a>
+    </h5>
+    <hr>
+<div class="row">
+        <div class="col-sm-6">
+
+                <div class="mb-3">
+                    <label class="dash-label">Full Name :<b class="value-text">{% if user.first_name or user.last_name %}
+                            {{ user.first_name }} {{ user.last_name }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}</b> </label>
+                   
+                </div>
+
+                <div class="mb-3">
+                    <p class="dash-label">Email:
+                        <b class="value-text">{{ user.email }}</b>
+                </div>
+
+                <div class="mb-3">
+                    <label class="dash-label">Company:</label>
+                    <b class="value-text">{{ user.profile.company|default:"—" }}</b>
+                </div>
+
+                <div class="mb-3">
+                    <label class="dash-label">Phone:
+                    <b class="value-text">{{ user.profile.phone|default:"—" }}</b>
+                </label>
+                </div>
+        
+
+      
+
+     
+
+        </div>
+        
+</div>
+</div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card-box mt-4">
+
+    <h5 class="fw-bold d-flex justify-content-between align-items-center">
+        Activity Stream
+
+        <a href="/rdp-activity/" class="btn btn-sm">
+            View More →
+        </a>
+    </h5>
+
+    <hr>
+
+  <ul class="list-group">
+
+    {% for a in activities %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>
+            <i class="fa-solid fa-bell text-primary"></i>
+            <strong>{{ a.username }}</strong> {{ a.action }}
+        </span>
+        <small class="text-muted">
+            {{ a.time|date:"d/m/Y h:i A" }}
+        </small>
+    </li>
+    {% empty %}
+    <li class="list-group-item text-muted">No recent activity</li>
+    {% endfor %}
+
+</ul>
+
+
+
+</div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

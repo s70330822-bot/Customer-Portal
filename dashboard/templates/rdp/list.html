@@ -1,0 +1,52 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-3"> RDP Activity Logs</h2>
+
+    <!-- Filters Section -->
+    <form method="get" class="row mb-4">
+    </form>
+
+    <!-- Auto Refresh -->
+    <script>
+        setInterval(() => {
+            location.reload();
+        }, 15000); // refresh every 15 seconds
+    </script>
+
+    <!-- Logs Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table">
+                <tr>
+                    <th>Event</th>
+                    <th>User</th>
+                    <th>IP Address</th>
+                    <th>Event Time</th>
+                    <th>Date & Time</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.get_event_id_display }}</td>
+                    <td>{{ log.username }}</td>
+                    <td>{{ log.ip_address }}</td>
+                    <td>{{ log.event_time|date:"Y-m-d H:i" }}</td>
+                    <td>{{ log.received_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
